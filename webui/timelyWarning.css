@@ -1,0 +1,43 @@
+body, html {
+	height: 100%;
+	width: 100%;
+	background-color: green;
+}
+
+#map {
+	width: 95%;
+    height: 75%;
+    margin: 15px;
+}
+ 
+.table-striped > tbody > tr:nth-child(odd) > td {
+	background-color: white;
+}
+.table-striped > tbody > tr:nth-child(even) > td {
+   background-color: red;
+}
+
+.jumbotron {
+	background: black;
+	color: white;
+	margin: 10px;
+	padding: 10px;
+	border: ridge 5px white;
+}
+
+.banner {
+	width:100%;
+	background-color:white;
+	/* border: ridge 5px white; */
+	padding: 5px;
+}
+
+.panel-group {
+	color: green;
+	width: 90%;	
+	margin: 15px;
+}
+
+.dropdown {
+	margin: 15px;
+}

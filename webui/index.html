@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+	<title>EMU Timely Warnings</title>
+	<meta charset="utf-8" >
+	<link href="images/emuLogo.png" rel="icon" type="image/png" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  	<link rel="stylesheet" href="timelyWarning.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  	<script src="https://maps.googleapis.com/maps/api/js"></script>
+  	<script>
+  		$(document).ready(function(){
+  			
+			$(".navbar-right").click(function(){
+				$("html").css({"filter": "grayscale(1)"});
+				$("html").css({"background-color": "#595959 "});
+			});
+		});
+  	</script>
+</head>
+<body id="gray">
+	<nav class="navbar navbar-inverse">
+	  <div class="container-fluid">
+		<div class="navbar-header">
+		   <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		  </button>
+		  <a class="navbar-brand" href="index.html">Home</a>
+		</div>
+    	<div class="collapse navbar-collapse" id="myNavbar">
+		  <ul class="nav navbar-nav">
+			<li><a href="localMap.html">Crime Map</a></li>
+			<li><a href="moreInfo.html">Contact Info</a></li>
+		  </ul>
+		  <ul class="nav navbar-nav navbar-right">
+        	<li><a href="#"><span class="glyphicon glyphicon-eye-open"></span>Gray Scale</a></li>
+    	  </ul>
+		</div>
+	  </div>
+	</nav>	
+	<div class="container">
+	<img class="banner" src="images/emuBanner.png" alt="EMU Banner">
+	</div>
+	<div class="container">
+	  <div class="jumbotron text-center">
+		<h1>Timely Warning</h1>
+		<p>This website provides up-to-date information about crimes occurring
+		on Eastern Michigan University's campus and the surrounding area.</p>
+	  </div>
+	</div>
+</body>
+</html>

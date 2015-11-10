@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+<head>
+	<title>EMU Timely Warnings</title>
+	<meta charset="utf-8" >
+	<link href="images/emuLogo.png" rel="icon" type="image/png" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  	<link rel="stylesheet" href="timelyWarning.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  	<script>
+  		$(document).ready(function(){
+			$(".navbar-right").click(function(){
+				$("html").css({"filter": "grayscale(1)"});
+				$("html").css({"background-color": "#595959 "});
+			});
+		});
+  	</script>
+</head>
+<body id="gray">
+	<nav class="navbar navbar-inverse">
+	  <div class="container-fluid">
+		<div class="navbar-header">
+		  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		  </button>
+		  <a class="navbar-brand" href="index.html">Home</a>
+		</div>
+    	<div class="collapse navbar-collapse" id="myNavbar">
+		  <ul class="nav navbar-nav">
+			<li><a href="localMap.html">Crime Map</a></li>
+			<li><a href="moreInfo.html">Contact Info</a></li>
+		  </ul>
+		  <ul class="nav navbar-nav navbar-right">
+        	<li><a href="#"><span class="glyphicon glyphicon-eye-open"></span>Gray Scale</a></li>
+    	  </ul>
+		</div>
+	  </div>
+	</nav>
+	<div class="dropdown">
+	  <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Filter Crime
+	  <span class="caret"></span></button>
+	  <ul class="dropdown-menu">
+	  	<li><a onClick="location.reload()">All</a></li>
+		<li><a onClick="getApi('assault')">Assault</a></li>
+		<li><a onClick="getApi('robbery')">Robbery</a></li>
+		<li><a onClick="getApi('home invasion')">Home Invasion</a></li>
+	  </ul>
+	</div>
+	<div id="map"></div>
+	<script>	
+	var emu = {lat: 42.2502, lng: -83.6245};
+	var data = [];
+	var geocoder;
+	var map;
+	var content;
+
+function marker() {
+	getApi();
+}	
+function getApi(crimeType){
+	if(crimeType == null){
+		var api = "http://crimes.gat.im:7001/crimes";
+	}
+	else{
+		var api = "http://crimes.gat.im:7001/crimes/" + crimeType;
+	}
+	
+	$.ajax ({
+		url:api,
+		dataType:"text",
+		method: "GET",
+		success: function(response){
+			response = JSON.parse(response);
+			geocoder = new google.maps.Geocoder();
+			var mapOptions = {
+				zoom: 14,
+				center: emu,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			}
+			map = new google.maps.Map(document.getElementById('map'), mapOptions);
+			var infowindow = new google.maps.InfoWindow();
+			req1 = response.slice(0,8);
+			req2 = response.slice(9,15);		
+			getLatLng(req1, geocoder, map, infowindow);
+			setTimeout(function(){getLatLng(req2, geocoder, map, infowindow);}, 4000);
+		}
+	});
+};
+
+function getLatLng(req, geocoder, map, infowindow) {
+	var d = new Date();
+	//console.log(d.getMilliseconds());
+	
+ 	for (var i = 0; i<req.length; i++) {
+ 	 	var string = req[i]['date'] +"<br />"+ req[i]['crime']+
+			"<br />"+ req[i]['email_text']+"..."
+			+'<a target="_blank" href="http://www.emich.edu/police/alerts/safetynotices/index.php">EMU Police Website</a>';
+ 		thisAddr = req[i]['location'];
+ 		console.log(string);
+ 		uselessvar = makeMarker(infowindow, thisAddr, string);
+ 	};
+}
+
+function makeMarker(infowindow, addr, infoContent){
+	geocoder.geocode({'address': addr+" Ypsilanti Mi"}, function(results, status){ 
+ 			if (status == google.maps.GeocoderStatus.OK){
+ 				//console.log(results);
+ 				var thisMarker = new google.maps.Marker({
+ 					map: map,
+ 					position: results[0].geometry.location
+ 				});
+ 				
+  				//console.log(infoContent);
+  				google.maps.event.addListener(thisMarker, 'click', function() {
+  					infowindow.setContent(infoContent);
+   	 				infowindow.open(map, thisMarker);
+   	 				console.log(infoContent);
+  				});
+ 			}
+ 			else{
+ 				console.log("Geocode failed: " + status);
+ 			}
+ 	});
+ 	return "Holla"
+}
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcGUNpxsW8_eeB6BRwdc3cDEM0l0pVwdg&signed_in=true&callback=marker"></script>
+</body>
+</html>
